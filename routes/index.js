@@ -1,9 +1,7 @@
-const authRoute = require('./authRoute');
+const authRoute = require('./auth.route');
 
 function build(app) {
-  app.use('/api/v1/auth', authRoute);
+  app.use('/', authRoute);
 }
 
-module.exports = {
-  build
-}
+module.exports = build;

@@ -1,12 +1,11 @@
-const { Router } = require('express');
-const AuthController = require('../controllers/authController');
-
-const router = Router();
+const express = require('express');
+const router = express.Router();
+const AuthController = require('../controllers/auth.controller');
 
 router.get('/', AuthController.Hi);
 router.get('/family/:family_id', AuthController.getFamilyByFamilyID);
 router.post('/family', AuthController.newFamily);
-// router.get('/menu', authController.getMenu);
+// // router.get('/menu', authController.getMenu);
 // router.post('/menu', authController.postMenu);
 // router.get('/fridge_item/:family_id', authController.getItemsInFridgeByFamilyID);
 // router.post('/fridge_item/:family_id', authController.postItemsInFridgeByFamilyID);
@@ -24,6 +23,4 @@ router.post('/family', AuthController.newFamily);
 // router.get('/all_data/:family_id', authController.allDataByFamilyID);
 
 
-module.exports = {
-    router
-}
+module.exports = router;

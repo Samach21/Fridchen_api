@@ -2,7 +2,6 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const socketio = require('socket.io');
-// const { MongoClient } = require("mongodb");
 const { default: helmet } = require('helmet');
 const routes = require('./routes');
 
@@ -50,16 +49,23 @@ function createServer() {
     
     
         socket.emit('message', 'Well done!');
+
+        socket.on('message', mes => {console.log(mes)})
+    });
+
+    app.use((req, res, next) => {
+        req.io = io;
+        return next();
     });
 
     routes(app);
 
+    
+
     return server
 }
 
-module.exports = {
-    createServer
-}
+module.exports = createServer;
 
 
 // app.get('/', (req, res) => {
