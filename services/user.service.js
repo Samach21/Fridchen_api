@@ -10,6 +10,15 @@ exports.getUser = async function (id) {
     }
 }
 
+exports.getUserByFamilyID = async function (id) {
+    try {
+        const user = await User.find({family_ids: id});
+        return user
+    } catch (e) {
+        throw Error(`Error can not find users, that have family_id: ${id}`);
+    }
+}
+
 exports.newUser = async function (new_user) {
     try {
         const user = new User(new_user);
@@ -39,8 +48,9 @@ exports.newFamily = async function (query) {
 }
 
 exports.deleteFamily = async function (query) {
+    console.log(query.family_id)
     try {
-        const user = await User.findOneAndUpdate({id: query.user_id}, {$pullAll: {family_ids: query.family_id}}, {new: true});
+        const user = await User.findOneAndUpdate({id: query.user_id}, {$pull: {family_ids: mongoose.Types.ObjectId(query.family_id)}}, {new: true});
         return user
     } catch (e) {
         throw Error(`Error can not delete family_id: ${query.family_id} in user`)

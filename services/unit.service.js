@@ -9,6 +9,15 @@ exports.getUnit = async function (id) {
     }
 }
 
+exports.getAllUnit = async function () {
+    try {
+        const unit = await Unit.find();
+        return unit
+    } catch (e) {
+        throw Error(`Error can not find units`)
+    }
+}
+
 exports.newUnit = async function (new_unit) {
     try {
         const unit = new Unit(new_unit);

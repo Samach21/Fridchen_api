@@ -4,7 +4,7 @@ const AuthController = require('../controllers/auth.controller');
 const FamilyController = require('../controllers/family.controller');
 
 router.get('/', AuthController.Hi);
-router.get('/family/:family_id', FamilyController.getFamilyByFamilyID);
+router.get('/family/:family_id', FamilyController.getFamily);
 router.post('/family', FamilyController.newFamily);
 router.post('/family_by_user/:user_id', FamilyController.createFamily);
 // // router.get('/menu', authController.getMenu);

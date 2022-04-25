@@ -1,7 +1,7 @@
 const FamilyService = require('../services/family.service');
 const UserService = require('../services/user.service');
 
-exports.getFamilyByFamilyID = async function (req, res, next) {
+exports.getFamily = async function (req, res, next) {
     const family_id = req.params.family_id;
     try {
         const family = await FamilyService.getFamily(family_id);
@@ -29,6 +29,20 @@ exports.createFamily = async function (req, res, next) {
         const family_id = family._id;
         const user = await UserService.newFamily({family_id, user_id});
         return res.status(200).json({ status: 200, data: {family, user}});
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
+exports.deleteFamily = async function (req, res, next) {
+    const family_id = req.params.family_id;
+    try {
+        const users = await UserService.getUserByFamilyID(family_id);
+        users.map(async user => {
+            await UserService.deleteFamily({family_id, user_id: user.id});
+        })
+        const family = await FamilyService.deleteFamily(family_id);
+        return res.status(200).json({ status: 200, data: family });
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
     }

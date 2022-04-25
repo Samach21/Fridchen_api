@@ -1,9 +1,9 @@
 const Menu = require('../models/menu.model');
 const { default: mongoose } = require('mongoose');
 
-exports.newMenu = async function (query) {
+exports.newMenu = async function (new_menu) {
     try {
-        const menu = new Menu(query);
+        const menu = new Menu(new_menu);
         await menu.save();
         return menu
     } catch (e) {

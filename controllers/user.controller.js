@@ -1,4 +1,3 @@
-const { default: mongoose } = require('mongoose');
 const UserService = require('../services/user.service');
 
 exports.newUser = async function (req, res, next) {
@@ -36,8 +35,8 @@ exports.leaveFamily = async function (req, res, next) {
     const user_id = req.body.user_id;
     try {
         const old_user = await UserService.getUser(user_id);
-        const family_ids = old_user.family_ids.filter(e => e !== mongoose.Types.ObjectId(family_id));
-        const user = await UserService.updateFamily(family_ids)
+        const family_ids = old_user.family_ids.filter(e => e.valueOf() !== family_id);
+        const user = await UserService.updateFamily({family_ids, user_id})
         return res.status(200).json({ status: 200, data: user});
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });

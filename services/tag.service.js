@@ -1,5 +1,14 @@
 const Tag = require('../models/tag.model');
 
+exports.getAllTag = async function () {
+    try {
+        const tags = await Tag.find();
+        return tags
+    } catch (e) {
+        throw Error(`Error can not find tags`)
+    }
+}
+
 exports.getTag = async function (id) {
     try {
         const tag = await Tag.findById(id);
