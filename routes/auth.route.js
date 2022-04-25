@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const AuthController = require('../controllers/auth.controller');
+const FamilyController = require('../controllers/family.controller');
 
 router.get('/', AuthController.Hi);
-router.get('/family/:family_id', AuthController.getFamilyByFamilyID);
-router.post('/family', AuthController.newFamily);
+router.get('/family/:family_id', FamilyController.getFamilyByFamilyID);
+router.post('/family', FamilyController.newFamily);
+router.post('/family_by_user/:user_id', FamilyController.createFamily);
 // // router.get('/menu', authController.getMenu);
 // router.post('/menu', authController.postMenu);
 // router.get('/fridge_item/:family_id', authController.getItemsInFridgeByFamilyID);

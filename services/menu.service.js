@@ -4,30 +4,27 @@ const { default: mongoose } = require('mongoose');
 exports.newMenu = async function (query) {
     try {
         const menu = new Menu(query);
-        menu.save();
-        return query
+        await menu.save();
+        return menu
     } catch (e) {
         throw Error('Error can not create new Menu')
     }
 }
 
-exports.getMenu = async function (query) {
+exports.getMenu = async function (id) {
     try {
-        const menu = await Menu.findById(query);
+        const menu = await Menu.findById(id);
         return menu
     } catch (e) {
-        throw Error(`Error can not find menu_id: ${query}`);
+        throw Error(`Error can not find menu_id: ${id}`);
     }
 }
 
 exports.getMenus = async function (query) {
     try {
-        let arr = []
-        for (let i = 0; i < query.length; i++) {
-            const element = query[i];
-            arr.push(mongoose.Schema.Types.ObjectId(element));
-        }
-        const menus = await Menu.find({'_id': {$in: arr}});
+        const menus = await Menu.find({'_id': {$in: query.map( id => {
+            return mongoose.Types.ObjectId(id)
+        })}});
         return menus
     } catch (e) {
         throw Error(`Error can not find menu_ids: ${query}`);
@@ -40,5 +37,14 @@ exports.updateMenu = async function (query) {
         return menu
     } catch (e) {
         throw Error('Error can not update menu');
+    }
+}
+
+exports.deleteMenu = async function (id) {
+    try {
+        const deleted_menu = await Menu.findByIdAndDelete(id, {returnOriginal: true});
+        return deleted_menu
+    } catch (e) {
+        throw Error(`Error can not delete menu_id: ${id}`);
     }
 }
