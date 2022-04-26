@@ -1,3 +1,8 @@
-const a = ['a', 'b', 'c'];
+let person = {
+    name : 'John Doe',
+    age : 35
+  }
 
-console.log(a.filter(e => e!=='a'))
+  person.occupation = 'Web Designer'
+
+console.log(person)

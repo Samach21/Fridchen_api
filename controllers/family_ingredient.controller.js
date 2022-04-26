@@ -13,7 +13,7 @@ exports.getFamilyIngredient = async function (req, res, next) {
 
 exports.getFamilyingedients = async function (req, res, next) {
     const family_id = req.params.family_id;
-    const ingredient_ids = req.params.ingredient_ids;
+    const ingredient_ids = req.body.ingredient_ids;
     try {
         const family_ingredients = await familyIngredientService.getFamilyingedients({family_id, ingredient_ids});
         return res.status(200).json({ status: 200, data: family_ingredients });

@@ -20,6 +20,18 @@ exports.getUser = async function (req, res, next) {
     }
 }
 
+exports.checkAndGetUser = async function (req, res, next) {
+    const user_id = req.query.id;
+    if (user_id === null) return res.status(400).json({ status: 400, message: "id is null" });
+    try {
+        let _user = await UserService.getUser(user_id);
+        if (_user === null) _user = await UserService.newUser({id: user_id});
+        return res.status(200).json({ status: 200, data: _user});
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
 exports.deleteUser = async function (req, res, next) {
     const user_id = req.params.user_id;
     try {
