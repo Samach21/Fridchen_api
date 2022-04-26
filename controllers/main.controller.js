@@ -16,6 +16,7 @@ exports.getAll = async function (req, res, next) {
     const family_id = req.params.family_id;
     try {
         let family = await FamilyService.getFamily(family_id);
+        if (family === null) throw Error(`not found family_id: ${family_id}`);
         let fridge_items = await fridgeItemService.getAllFridgeItemByFamilyID(family_id);
         let shopping_lists = await shoppingListService.getAllShoppingListByFamilyID(family_id);
         const menu_id = family.menu.map(item => {

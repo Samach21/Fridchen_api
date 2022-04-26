@@ -9,6 +9,29 @@ exports.getIngredient = async function (id) {
     }
 }
 
+exports.getIngredientByname = async function (name) {
+    try {
+        const ingredient = await Ingredient.findOne(name);
+        return ingredient
+    } catch (e) {
+        throw Error(`Error can not find ingredient name: ${name}`)
+    }
+}
+
+exports.checkName = async function (name) {
+    try {
+        const ingredient = await Ingredient.findOne({name});
+        if (ingredient === null) {
+            const _ingredient = new Ingredient({name});
+            await _ingredient.save();
+            return _ingredient
+        }
+        else return ingredient;
+    } catch (e) {
+        throw Error(`Error can not find ingredient name: ${name}`)
+    }
+}
+
 exports.newIngredient = async function (new_ingredient) {
     try {
         const ingredient = new Ingredient(new_ingredient);

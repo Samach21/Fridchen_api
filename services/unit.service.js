@@ -20,6 +20,7 @@ exports.getAllUnit = async function () {
 
 exports.newUnit = async function (new_unit) {
     try {
+        if (!(Unit.findOne({name: new_unit.name}))) throw Error;
         const unit = new Unit(new_unit);
         await unit.save();
         return unit

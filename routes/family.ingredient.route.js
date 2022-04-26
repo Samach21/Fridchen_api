@@ -5,6 +5,7 @@ const FamilyIngredientController = require('../controllers/family_ingredient.con
 router.get('/family_id/:family_id/ingredient_id/:ingredient_id', FamilyIngredientController.getFamilyIngredient);
 router.get('/family_id/:family_id', FamilyIngredientController.getFamilyingedients);
 router.post('/new_family_ingerdient', FamilyIngredientController.newFamilyingedient);
+router.post('/set_is_star', FamilyIngredientController.setIsStar);
 router.delete('/family_id/:family_id/ingredient_id/:ingredient_id', FamilyIngredientController.deleteFamilyingedient);
 router.patch('/family_id/:family_id/ingredient_id/:ingredient_id', FamilyIngredientController.updateFamilyingedient);
 

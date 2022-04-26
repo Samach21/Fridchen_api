@@ -53,3 +53,15 @@ exports.updateFamilyingedient = async function (req, res, next) {
         return res.status(400).json({ status: 400, message: e.message });
     }
 }
+
+exports.setIsStar = async function (req, res, next) {
+    const family_id = req.body.family_id;
+    const ingredient_id = req.body.ingredient_id;
+    const is_star = req.body.is_star;
+    try {
+        const family_ingredient = await familyIngredientService.setIsStar({family_id, ingredient_id, is_star});
+        return res.status(200).json({ status: 200, data: family_ingredient });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}

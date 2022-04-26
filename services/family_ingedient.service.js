@@ -49,6 +49,18 @@ exports.updateFamilyingedient = async function (query) {
     }
 }
 
+exports.setIsStar = async function (query) {
+    try {
+        const family_ingredient = await Familyingedient.findOneAndUpdate({
+            family_id: mongoose.Types.ObjectId(query.family_id), 
+            ingredient_id: mongoose.Types.ObjectId(query.ingredient_id)
+        }, {is_star: query.is_star}, {new: true});
+        return family_ingredient
+    } catch (e) {
+        throw Error('Error can not update family ingredient');
+    }
+}
+
 exports.deleteFamilyingedient = async function (query) {
     try {
         const deleted_family_ingredient = await Familyingedient.findOneAndDelete({
