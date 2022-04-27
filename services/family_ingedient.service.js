@@ -72,3 +72,12 @@ exports.deleteFamilyingedient = async function (query) {
         throw Error(`Error can not delete family_ingredient that family_id: ${query.family_id} and ingredient_id: ${query.ingredient_id}`)
     }
 }
+
+exports.deleteFamilyingedientByID = async function (id) {
+    try {
+        const deleted_family_ingredient = await Familyingedient.findByIdAndDelete(id, {returnOriginal: true});
+        return deleted_family_ingredient
+    } catch (e) {
+        throw Error(`Error can not delete family_ingredient that family_id: ${query.family_id} and ingredient_id: ${query.ingredient_id}`)
+    }
+}

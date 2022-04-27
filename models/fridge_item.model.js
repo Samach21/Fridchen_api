@@ -3,7 +3,7 @@ var mongoose = require('mongoose')
 const FridgeItemSchema  = new mongoose.Schema({
     family_id: {type: mongoose.Schema.Types.ObjectId, required: true},
     ingredient_id: {type: mongoose.Schema.Types.ObjectId, required: true},
-    exp: Date,
+    exp: String,
     cout_left: Number
 })
 

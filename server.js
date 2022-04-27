@@ -5,7 +5,7 @@ const socketio = require('socket.io');
 const { default: helmet } = require('helmet');
 const routes = require('./routes');
 
-const {userJoin, getRoomUsers} = require('./utils/users');
+const {userJoin, userLeave, getCurrentUser, getRoomUsers} = require('./utils/users');
 
 function createServer() {
     const app = express();
@@ -23,21 +23,27 @@ function createServer() {
 
     io.on('connection', socket => {
         console.log('Connecting...')
-    
-        socket.on('joinRoom', ({ username, room }) => {
-            const user = userJoin(socket.id, username, room);
+        
+        socket.emit('message', 'Hello!')
+
+        socket.on('joinRoom', data => {
+            data = JSON.parse(data)
+            const user_id = data.user_id;
+            const room = data.family_id;
+            const user = userJoin(socket.id, user_id, room);
         
             socket.join(user.room);
+            
         
             // Welcome current user
-            socket.emit('message', formatMessage(botName, 'Welcome to ChatCord!'));
+            socket.emit('message', `Welcome to family_id: ${room}`);
         
             // Broadcast when a user connects
             socket.broadcast
               .to(user.room)
               .emit(
                 'message',
-                formatMessage(botName, `${user.username} has joined the chat`)
+                `${user.user_id} has joined the room`
               );
         
             // Send users and room info
@@ -46,11 +52,29 @@ function createServer() {
                 users: getRoomUsers(user.room)
             });
         });
-    
-    
-        socket.emit('message', 'Well done!');
 
-        socket.on('message', mes => {console.log(mes)})
+        socket.on('message', mes => {console.log(mes)});
+
+        socket.on('disconnect', () => {
+            const user = userLeave(socket.id);
+        
+            if (user) {
+                io.to(user.room).emit(
+                    'message',
+                    `${user.user_id} has left the room`
+                );
+            
+                // Send users and room info
+                io.to(user.room).emit('roomUsers', {
+                    room: user.room,
+                    users: getRoomUsers(user.room)
+                });
+            }
+        });
+    });
+
+    io.on("connect_error", (err) => {
+        console.log(`connect_error due to ${err.message}`);
     });
 
     app.use((req, res, next) => {

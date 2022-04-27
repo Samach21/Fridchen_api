@@ -48,9 +48,11 @@ exports.getAll = async function (req, res, next) {
                 _fridge_item.ingredient_id = ingredient.ingredient_id;
                 _fridge_item.ingredient_name = (await ingredientService.getIngredient(ingredient.ingredient_id)).name;
                 _fridge_item.cout_left = ingredient.cout_left;
+                _fridge_item.exp = ingredient.exp;
                 const family_ingredients = await familyIngredientService.getFamilyingedient({family_id: ingredient.family_id, ingredient_id: ingredient.ingredient_id});
-                _fridge_item.min = family_ingredients.min
-                _fridge_item.is_star = family_ingredients.is_star
+                if (family_ingredients === null) continue;
+                _fridge_item.min = family_ingredients.min;
+                _fridge_item.is_star = family_ingredients.is_star;
                 _fridge_item.tags = await handleTag(family_ingredients.tag_id);
                 _fridge_item.unit_id = family_ingredients.unit_id;
                 _fridge_item.unit_name = (await UnitService.getUnit(family_ingredients.unit_id)).name;
@@ -67,6 +69,7 @@ exports.getAll = async function (req, res, next) {
                 _shopping_list.ingredient_name = (await ingredientService.getIngredient(ingredient.ingredient_id)).name;
                 const family_ingredients = await familyIngredientService.getFamilyingedient({family_id: ingredient.family_id, ingredient_id: ingredient.ingredient_id});
                 _shopping_list.tags = await handleTag(family_ingredients.tag_id);
+                _shopping_list.is_bought = ingredient.is_bought;
                 _shopping_lists.push(_shopping_list)
             }
             return _shopping_lists
@@ -77,7 +80,7 @@ exports.getAll = async function (req, res, next) {
                 const tag_id = tags[index];
                 let _tag = {};
                 _tag.tag_id = tag_id;
-                const tag = await TagService.getTag(tag_id)
+                const tag = await TagService.getTag(tag_id);
                 _tag.tag_name = tag.name;
                 _tag.color = tag.color;
                 _tags.push(_tag)
@@ -89,7 +92,7 @@ exports.getAll = async function (req, res, next) {
             for (let index = 0; index < menu1.length; index++) {
                 const item = menu1[index];
                 let _menu = {};
-                _menu.menu_id = item._id;
+                _menu.menu_id = menu2[index]._id;
                 _menu.is_pin = item.is_pin;
                 _menu.menu_name = menu2[index].name;
                 _menu.steps = menu2[index].steps;

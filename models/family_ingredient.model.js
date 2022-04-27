@@ -9,6 +9,6 @@ const FridgeIngredientSchema  = new mongoose.Schema({
     is_star: {type: Boolean, default: false}
 })
 
-const FridgeIngredient = mongoose.model('fridge_ingredient', FridgeIngredientSchema)
+const FridgeIngredient = mongoose.model('family_ingredient', FridgeIngredientSchema)
 
 module.exports = FridgeIngredient;
